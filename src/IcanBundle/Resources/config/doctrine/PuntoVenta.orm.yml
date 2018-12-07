@@ -1,0 +1,37 @@
+IcanBundle\Entity\PuntoVenta:
+  type: entity
+  repositoryClass: IcanBundle\Entity\PuntoVentaRepository
+  table: punto_venta
+  id:
+    puntoVentaId:
+      type: integer
+      nullable: false
+      options:
+        unsigned: false
+      id: true
+      column: punto_venta_id
+      generator:
+        strategy: AUTO
+  fields:
+    titulo:
+      type: string
+      length: 255
+      options:
+        fixed: false
+      nullable: false
+    descripcion:
+      type: string
+      length: 1000
+      options:
+        fixed: false
+      nullable: true
+    ubicacionMapa:
+      type: string
+      length: 5000
+      options:
+        fixed: false
+      nullable: true
+    estado:
+      type: boolean
+      nullable: true
+  lifecycleCallbacks: {  }

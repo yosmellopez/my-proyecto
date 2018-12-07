@@ -1,0 +1,37 @@
+IcanBundle\Entity\EstacionServicio:
+  type: entity
+  repositoryClass: IcanBundle\Entity\EstacionServicioRepository
+  table: estacion_servicio
+  id:
+    estacionId:
+      type: integer
+      nullable: false
+      options:
+        unsigned: false
+      id: true
+      column: estacion_id
+      generator:
+        strategy: AUTO
+  fields:
+    titulo:
+      type: string
+      length: 255
+      options:
+        fixed: false
+      nullable: false
+    descripcion:
+      type: string
+      length: 1000
+      options:
+        fixed: false
+      nullable: true
+    ubicacionMapa:
+      type: string
+      length: 5000
+      options:
+        fixed: false
+      nullable: true
+    estado:
+      type: boolean
+      nullable: true
+  lifecycleCallbacks: {  }

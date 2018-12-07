@@ -1,0 +1,31 @@
+puntoVenta:
+    path:  /puntoVentas
+    defaults: { _controller: IcanBundle:PuntoVenta:index }
+    
+listarPuntoVenta:
+    path:  /puntoVenta/listarPuntoVenta
+    defaults: { _controller: IcanBundle:PuntoVenta:listar, _format: json }
+
+eliminarPuntoVenta:
+    path:  /puntoVenta/eliminarPuntoVenta
+    defaults: { _controller: IcanBundle:PuntoVenta:eliminar, _format: json }
+    
+eliminarPuntoVentas:
+    path:  /puntoVenta/eliminarPuntoVentas
+    defaults: { _controller: IcanBundle:PuntoVenta:eliminarPuntoVentas, _format: json }
+ 
+salvarPuntoVenta:
+    path:  /puntoVenta/salvarPuntoVenta
+    defaults: { _controller: IcanBundle:PuntoVenta:salvar, _format: json }
+    
+salvarImagenPuntoVenta:
+    path:  /puntoVenta/salvarImagen
+    defaults: { _controller: IcanBundle:PuntoVenta:salvarImagen, _format: json }
+    
+eliminarImagenPuntoVenta:
+    path:  /puntoVenta/eliminarImagen
+    defaults: { _controller: IcanBundle:PuntoVenta:eliminarImagen, _format: json }
+       
+cargarDatosPuntoVenta:
+    path:  /puntoVenta/cargarDatos
+    defaults: { _controller: IcanBundle:PuntoVenta:cargarDatos, _format: json }

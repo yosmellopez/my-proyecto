@@ -1,0 +1,31 @@
+estacionServicio:
+    path:  /estacionServicios
+    defaults: { _controller: IcanBundle:EstacionServicio:index }
+    
+listarEstacionServicio:
+    path:  /estacionServicio/listarEstacionServicio
+    defaults: { _controller: IcanBundle:EstacionServicio:listar, _format: json }
+
+eliminarEstacionServicio:
+    path:  /estacionServicio/eliminarEstacionServicio
+    defaults: { _controller: IcanBundle:EstacionServicio:eliminar, _format: json }
+    
+eliminarEstacionServicios:
+    path:  /estacionServicio/eliminarEstacionServicios
+    defaults: { _controller: IcanBundle:EstacionServicio:eliminarEstacionServicios, _format: json }
+ 
+salvarEstacionServicio:
+    path:  /estacionServicio/salvarEstacionServicio
+    defaults: { _controller: IcanBundle:EstacionServicio:salvar, _format: json }
+    
+salvarImagenEstacionServicio:
+    path:  /estacionServicio/salvarImagen
+    defaults: { _controller: IcanBundle:EstacionServicio:salvarImagen, _format: json }
+    
+eliminarImagenEstacionServicio:
+    path:  /estacionServicio/eliminarImagen
+    defaults: { _controller: IcanBundle:EstacionServicio:eliminarImagen, _format: json }
+       
+cargarDatosEstacionServicio:
+    path:  /estacionServicio/cargarDatos
+    defaults: { _controller: IcanBundle:EstacionServicio:cargarDatos, _format: json }
