@@ -33,3 +33,7 @@ cargarDatosSlider:
 cambiarPosicionSlider:
     path:  /slider/cambiarPosicion
     defaults: { _controller: IcanBundle:Slider:cambiarPosicion, _format: json }
+
+cortarImagenSlider:
+    path:  /slider/cortarImagen
+    defaults: { _controller: IcanBundle:Slider:cortarImagen, _format: json }

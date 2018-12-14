@@ -16,7 +16,6 @@ class ProductoController extends BaseController
 
     public function indexAction() {
         $categorias = $this->ListarCategoriasArbol();
-
         $marcas = $this->getDoctrine()->getRepository('IcanBundle:Marca')->ListarOrdenadas();
         $ruta = $this->ObtenerURL();
         $dir = 'uploads/productos/';
@@ -307,6 +306,24 @@ class ProductoController extends BaseController
             $resultadoJson['error'] = $resultado['error'];
             return new Response(json_encode($resultadoJson));
         }
+    }
+
+    public function cortarImagenAction(Request $request) {
+        $ruta = $this->ObtenerURL();
+        $dir = 'uploads/productos/';
+        $imagen = $request->get("imagen");
+        $src = $ruta . $dir . $imagen;
+        $targ_w = $request->get("width");
+        $targ_h = $request->get("height");
+        $x = $request->get("xInitial");
+        $y = $request->get("yInitial");
+        $jpeg_quality = 90;
+        $img_r = imagecreatefromjpeg($src);
+        $dst_r = ImageCreateTrueColor($targ_w, $targ_h);
+        imagecopyresampled($dst_r, $img_r, 5, 0, $x - 355, $y, $targ_w - 355, $targ_h, $targ_w - 305, $targ_h);
+        imagejpeg($dst_r, $dir . $imagen, $jpeg_quality);
+        $resultadoJson = array("success" => true, "message" => "Se ha recortado la imagen correctamente.", "file" => $ruta . $dir, "imagen" => $imagen);
+        return new Response(json_encode($resultadoJson));
     }
 
     /**

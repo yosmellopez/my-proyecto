@@ -3,7 +3,7 @@
 {% block subtitle %} - Sliders{% endblock %}
 
 {% block stylesheetspecific %}
-<link rel="stylesheet" href="{{ asset('bundles/ican/css/darkroom.css') }}"/>
+    <link href="{{ asset('bundles/ican/css/jquery.Jcrop.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -135,7 +135,7 @@
                   enctype="multipart/form-data" method="post">
 
                 <input type="hidden" id="slider_id" name="slider_id"/>
-
+                <input type="hidden" id="imagen_name" name="imagen"/>
                 <div class="m-portlet__body">
                     <div class="m-form__section m-form__section--first">
                         <div class="form-group m-form__group ic-form-group">
@@ -150,8 +150,7 @@
                             </p>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control event-change" id="nombre"
-                                           name="nombre"/>
+                                    <input type="text" class="form-control event-change" id="nombre" name="nombre"/>
                                 </div>
                             </div>
                         </div>
@@ -174,9 +173,7 @@
                                             <h3 class="m-dropzone__msg-title">
                                                 Arrastra o has click para subir.
                                             </h3>
-                                            <span class="m-dropzone__msg-desc">
-                                                    sube tu galería de fotos
-                                                </span>
+                                            <span class="m-dropzone__msg-desc">sube tu galería de fotos</span>
                                         </div>
                                     </div>
                                 </div>
@@ -190,8 +187,7 @@
                             </label>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control event-change" id="url"
-                                           name="url"/>
+                                    <input type="text" class="form-control event-change" id="url" name="url"/>
                                 </div>
                             </div>
                             <div class="form-group m-form__group">
@@ -203,8 +199,7 @@
                                         <div class="m-form__group form-group">
                                             <div class="m-radio-inline">
                                                 <label class="m-radio">
-                                                    <input type="radio" name="radioformadeabrir" id="formadeabrirself"
-                                                           class="event-change" checked>
+                                                    <input type="radio" name="radioformadeabrir" id="formadeabrirself" class="event-change" checked>
                                                     Abrir enlace en la misma ventana
                                                     <span></span>
                                                 </label>
@@ -299,11 +294,14 @@
 {% endblock %}
 
 {% block javascriptsspecific %}
-    <script src="{{ asset('bundles/ican/js/crop/darkroom.js') }}"></script>
+    <script src="{{ asset('bundles/ican/plugins/jcrop/jquery.color.js') }}"></script>
+    <script src="{{ asset('bundles/ican/plugins/jcrop/jquery.Jcrop.js') }}"></script>
     <script src="{{ asset('bundles/ican/js/pages/sliders.js') }}"></script>
     <script>
+        var rutaServidor = "{{ ruta }}";
         jQuery(document).ready(function () {
             Sliders.init();
         });
+        var rutaServidor = "{{ ruta }}";
     </script>
 {% endblock %}

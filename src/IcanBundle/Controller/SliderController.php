@@ -9,17 +9,17 @@ use IcanBundle\Entity;
 class SliderController extends BaseController
 {
 
-    public function indexAction()
-    {
-        return $this->render('IcanBundle:Slider:index.html.twig', array());
+    public function indexAction() {
+        $ruta = $this->ObtenerURL();
+        $dir = 'uploads/sliders/';
+        return $this->render('IcanBundle:Slider:index.html.twig', array('ruta' => $ruta . $dir));
     }
 
     /**
      * listarAction Acción que lista los sliders
      *
      */
-    public function listarAction(Request $request)
-    {
+    public function listarAction(Request $request) {
         // search filter by keywords
         $query = !empty($request->get('query')) ? $request->get('query') : array();
         $sSearch = isset($query['generalSearch']) && is_string($query['generalSearch']) ? $query['generalSearch'] : '';
@@ -76,8 +76,7 @@ class SliderController extends BaseController
      * salvarAction Acción que inserta un menu en la BD
      *
      */
-    public function salvarAction(Request $request)
-    {
+    public function salvarAction(Request $request) {
         $slider_id = $request->get('slider_id');
 
         $nombre = $request->get('nombre');
@@ -114,8 +113,7 @@ class SliderController extends BaseController
      * eliminarAction Acción que elimina un slider en la BD
      *
      */
-    public function eliminarAction(Request $request)
-    {
+    public function eliminarAction(Request $request) {
         $slider_id = $request->get('slider_id');
 
         $resultado = $this->EliminarSlider($slider_id);
@@ -134,8 +132,7 @@ class SliderController extends BaseController
      * eliminarSlidersAction Acción que elimina los sliders seleccionados en la BD
      *
      */
-    public function eliminarSlidersAction(Request $request)
-    {
+    public function eliminarSlidersAction(Request $request) {
         $ids = $request->get('ids');
 
         $resultado = $this->EliminarSliders($ids);
@@ -154,8 +151,7 @@ class SliderController extends BaseController
      * cargarDatosAction Acción que carga los datos del slider en la BD
      *
      */
-    public function cargarDatosAction(Request $request)
-    {
+    public function cargarDatosAction(Request $request) {
         $slider_id = $request->get('slider_id');
 
         $resultado = $this->CargarDatosSlider($slider_id);
@@ -177,8 +173,7 @@ class SliderController extends BaseController
      * salvarImagenAction Acción para subir una imagen al servidor
      *
      */
-    public function salvarImagenAction()
-    {
+    public function salvarImagenAction() {
         try {
             $nombre_archivo = $_FILES['foto']['name'];
             $array_nombre_archivo = explode('.', $nombre_archivo);
@@ -207,8 +202,7 @@ class SliderController extends BaseController
      * eliminarImagenAction Acción que elimina una imagen en la BD
      *
      */
-    public function eliminarImagenAction(Request $request)
-    {
+    public function eliminarImagenAction(Request $request) {
         $imagen = $request->get('imagen');
 
         $resultado = $this->EliminarImagen($imagen);
@@ -228,8 +222,7 @@ class SliderController extends BaseController
      * cambiarPosicionAction Acción que sube o baja un slider
      *
      */
-    public function cambiarPosicionAction(Request $request)
-    {
+    public function cambiarPosicionAction(Request $request) {
         $slider_id = $request->get('slider_id');
         $direccion = $request->get('direccion');
 
@@ -245,13 +238,30 @@ class SliderController extends BaseController
         }
     }
 
+    public function cortarImagenAction(Request $request) {
+        $ruta = $this->ObtenerURL();
+        $dir = 'uploads/sliders/';
+        $imagen = $request->get("imagen");
+        $src = $ruta . $dir . $imagen;
+        $targ_w = $request->get("width");
+        $targ_h = $request->get("height");
+        $x = $request->get("xInitial");
+        $y = $request->get("yInitial");
+        $jpeg_quality = 90;
+        $img_r = imagecreatefromjpeg($src);
+        $dst_r = ImageCreateTrueColor($targ_w, $targ_h);
+        imagecopyresampled($dst_r, $img_r, 5, 0, $x - 355, $y, $targ_w - 355, $targ_h, $targ_w - 305, $targ_h);
+        imagejpeg($dst_r, $dir . $imagen, $jpeg_quality);
+        $resultadoJson = array("success" => true, "message" => "Se ha recortado la imagen correctamente.", "file" => $ruta . $dir, "imagen" => $imagen);
+        return new Response(json_encode($resultadoJson));
+    }
+
     /**
      * CambiarPosicionSlider: Sube/baja un slider
      * @param int $usuario_id Id
      * @author Marcel
      */
-    public function CambiarPosicionSlider($slider_id, $direccion)
-    {
+    public function CambiarPosicionSlider($slider_id, $direccion) {
         $resultado = array();
         $em = $this->getDoctrine()->getManager();
 
@@ -297,8 +307,7 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function EliminarImagen($imagen)
-    {
+    public function EliminarImagen($imagen) {
         $resultado = array();
         //Eliminar foto
         if ($imagen != "") {
@@ -329,8 +338,7 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function CargarDatosSlider($slider_id)
-    {
+    public function CargarDatosSlider($slider_id) {
         $resultado = array();
         $arreglo_resultado = array();
 
@@ -365,8 +373,7 @@ class SliderController extends BaseController
      * @param int $slider_id Id
      * @author Marcel
      */
-    public function EliminarSlider($slider_id)
-    {
+    public function EliminarSlider($slider_id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $this->getDoctrine()->getRepository('IcanBundle:Slider')
@@ -408,8 +415,7 @@ class SliderController extends BaseController
      * @param int $ids Ids
      * @author Marcel
      */
-    public function EliminarSliders($ids)
-    {
+    public function EliminarSliders($ids) {
         $em = $this->getDoctrine()->getManager();
 
         if ($ids != "") {
@@ -456,16 +462,14 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function ActualizarSlider($slider_id, $nombre, $url, $formadeabrir, $estado, $fecha, $titulo, $descripcion, $imagen)
-    {
+    public function ActualizarSlider($slider_id, $nombre, $url, $formadeabrir, $estado, $fecha, $titulo, $descripcion, $imagen) {
         $em = $this->getDoctrine()->getManager();
 
         $resultado = array();
         $entity = $this->getDoctrine()->getRepository('IcanBundle:Slider')->find($slider_id);
         if ($entity != null) {
             //Verificar nombre
-            $slider = $this->getDoctrine()->getRepository('IcanBundle:Slider')
-                ->findOneBy(array('nombre' => $nombre));
+            $slider = $this->getDoctrine()->getRepository('IcanBundle:Slider')->findOneBy(array('nombre' => $nombre));
             if ($slider != null) {
                 if ($entity->getSliderId() != $slider->getSliderId()) {
                     $resultado['success'] = false;
@@ -500,7 +504,6 @@ class SliderController extends BaseController
                     $entity->setImagen($imagen);
                 }
             }
-
             $em->flush();
             $resultado['success'] = true;
         } else {
@@ -516,8 +519,7 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function SalvarSlider($nombre, $url, $formadeabrir, $estado, $fecha, $titulo, $descripcion, $imagen)
-    {
+    public function SalvarSlider($nombre, $url, $formadeabrir, $estado, $fecha, $titulo, $descripcion, $imagen) {
         $resultado = array();
         $em = $this->getDoctrine()->getManager();
 
@@ -544,10 +546,7 @@ class SliderController extends BaseController
             $fecha = \DateTime::createFromFormat('d/m/Y H:i', $fecha);
             $entity->setFechapublicacion($fecha);
         }
-
-        $lista = $this->getDoctrine()->getRepository('IcanBundle:Slider')
-            ->ListarSliderOrdenados('DESC');
-
+        $lista = $this->getDoctrine()->getRepository('IcanBundle:Slider')->ListarSliderOrdenados('DESC');
         if (count($lista) > 0)
             $posicion = $lista[0]->getPosicion() + 1;
         else
@@ -555,11 +554,8 @@ class SliderController extends BaseController
 
         if ($posicion != 0)
             $entity->setPosicion($posicion);
-
         $em->persist($entity);
-
         $em->flush();
-
         //Salvar imagen
         $slider_id = $entity->getSliderId();
         $imagen = $this->RenombrarImagen($slider_id, $imagen);
@@ -576,8 +572,7 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function RenombrarImagen($id, $imagen)
-    {
+    public function RenombrarImagen($id, $imagen) {
         $dir = 'uploads/sliders/';
         $empresa = "ican";
         $tipo = "slider";
@@ -594,7 +589,6 @@ class SliderController extends BaseController
                 rename($dir . $imagen, $dir . $imagen_new);
             }
         }
-
         return $imagen_new;
     }
 
@@ -607,8 +601,7 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function ListarSliders($start, $limit, $sSearch, $iSortCol_0, $sSortDir_0)
-    {
+    public function ListarSliders($start, $limit, $sSearch, $iSortCol_0, $sSortDir_0) {
         $arreglo_resultado = array();
         $cont = 0;
 
@@ -646,8 +639,7 @@ class SliderController extends BaseController
      * @param string $sSearch Para buscar
      * @author Marcel
      */
-    public function TotalSliders($sSearch)
-    {
+    public function TotalSliders($sSearch) {
         $total = $this->getDoctrine()->getRepository('IcanBundle:Slider')
             ->TotalSliders($sSearch);
 
@@ -659,8 +651,7 @@ class SliderController extends BaseController
      *
      * @author Marcel
      */
-    public function ListarAcciones($id)
-    {
+    public function ListarAcciones($id) {
 
         $acciones = "";
 
